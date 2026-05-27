@@ -46,8 +46,6 @@
 
     html {
       background: var(--bg);
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
     }
     body {
       background: var(--bg);
@@ -57,8 +55,7 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-      overscroll-behavior-y: auto;
+      overflow-x: clip;
     }
 
     /* LIGHT MODE */
@@ -181,8 +178,10 @@
       justify-content: center;
       gap: 32px;
       transition: opacity 0.5s var(--ease-smooth), visibility 0.5s;
+      pointer-events: auto;
     }
-    #loader.hidden { opacity: 0; visibility: hidden; }
+    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #loader.gone { display: none; }
 
     .loader-mark {
       display: flex;
@@ -1915,7 +1914,11 @@
 <script>
   /* ══ LOADER ══ */
   window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+    const loader = document.getElementById('loader');
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      setTimeout(() => loader.classList.add('gone'), 600);
+    }, 1000);
   });
 
   /* ══ THEME ══ */
@@ -1928,7 +1931,7 @@
   (function initTheme() {
     let saved;
     try { saved = localStorage.getItem('steez-theme'); } catch(e) {}
-    const pref = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    const pref = saved || 'dark';
     document.documentElement.setAttribute('data-theme', pref);
   })();
 
