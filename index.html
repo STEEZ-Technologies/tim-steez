@@ -44,7 +44,11 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
+    html {
+      background: var(--bg);
+      overflow-y: scroll;
+    }
+    body {
       background: var(--bg);
       color: var(--cream);
       font-family: var(--font-en);
